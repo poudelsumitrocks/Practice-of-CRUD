@@ -1,0 +1,28 @@
+{
+  "internships": [
+    {
+      "id": 2,
+      "title": "Frontend Intern",
+      "company": "NextVision",
+      "location": "Kathmandu",
+      "duration": "2 months",
+      "description": "Work with React, Next.js UI components.",
+      "requirements": [
+        "HTML CSS",
+        "React basics"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Name1",
+      "email": "name1@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Name2",
+      "email": "name2@example.com"
+    }
+  ]
+}
