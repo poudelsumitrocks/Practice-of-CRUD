@@ -2,15 +2,16 @@
 
 import InternshipForm from "../../../components/internshipData/InternShipForm";
 
-export default function CreateInternForm({ onClose }) {
-  const handleSubmit = (data) => {
-    console.log("Form submitted:", data);
-    onClose(); 
+export default function CreateInternForm({ onClose, onSuccess }) {
+  // ONLY pass data upward
+  const handleSubmit = (formData) => {
+    onSuccess(formData);
   };
 
   return (
-    <div>
-      <InternshipForm onSubmit={handleSubmit} onClose={onClose} />
-    </div>
+    <InternshipForm
+      onSubmit={handleSubmit}
+      onClose={onClose}
+    />
   );
 }
