@@ -1,8 +1,10 @@
+"use client";
 
 import React, { useState, useEffect } from "react";
-import GetUser from "../../service/user.service";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
+import { updateUserAction, deleteUserAction } from "../../app/action/users.action";
+import GetUser from "../../service/user.service"; // still needed for fetching users
 
 export default function UserTable() {
   const [showForm, setShowForm] = useState(false);
@@ -14,7 +16,7 @@ export default function UserTable() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const data = await GetUser.getAll();
+      const data = await GetUser.getAll(); // fetching is still client-side
       setUsers(data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -27,37 +29,44 @@ export default function UserTable() {
     fetchUsers();
   }, []);
 
-  // Delete user
+  // Delete user via Server Action
   const handleDelete = async (id) => {
-    if (confirm("Are you sure you want to delete this user?")) {
-      await GetUser.delete(id);
-     
-      fetchUsers();
+    if (!confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      await deleteUserAction(id);
+      fetchUsers(); // refresh table
+    } catch (err) {
+      console.error("Delete failed:", err);
     }
   };
 
-  // Update user
+  // Update user via Server Action
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const payload = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-    };
+
+    const formData = new FormData();
+    formData.append("id", selectedUser.id);
+    formData.append("name", e.target.name.value);
+    formData.append("email", e.target.email.value);
 
     try {
-      await GetUser.update(selectedUser.id, payload);
-    
-      fetchUsers();
-      setShowForm(false);
-      setSelectedUser(null);
-    } catch (error) {
-      console.error("Update failed:", error);
+      const res = await updateUserAction(formData);
+      if (res?.success) {
+        fetchUsers();
+        setShowForm(false);
+        setSelectedUser(null);
+      } else {
+        alert("Update failed");
+      }
+    } catch (err) {
+      console.error("Update failed:", err);
     }
   };
 
   return (
     <div>
-      {/* Update Form */}
+      {/* Update Form Modal */}
       {showForm && selectedUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
@@ -111,9 +120,9 @@ export default function UserTable() {
               <th className="p-3">
                 <input type="checkbox" />
               </th>
-              <th className="p-3 ">Name</th>
-              <th className="p-3 ">Email</th>
-              <th className="p-3 ">Action</th>
+              <th className="p-3">Name</th>
+              <th className="p-3">Email</th>
+              <th className="p-3">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -141,6 +150,7 @@ export default function UserTable() {
                   <td className="p-2 font-sm">{user.name}</td>
                   <td className="p-2">{user.email}</td>
                   <td className="py-3 flex justify-center gap-3">
+                    {/* Edit button opens modal */}
                     <button
                       className="text-blue-500 hover:text-blue-700 hover:cursor-pointer"
                       onClick={() => {
@@ -150,6 +160,8 @@ export default function UserTable() {
                     >
                       <CiEdit size={20} />
                     </button>
+
+                    {/* Delete button calls server action */}
                     <button
                       className="text-red-500 hover:text-red-600 hover:cursor-pointer"
                       onClick={() => handleDelete(user.id)}

@@ -1,9 +1,9 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { UserAction, updateUserAction } from "../../app/action/users.action";
+import { UserAction } from "../../app/action/users.action";
 
-export default function UserForm({ onClose, onSuccess, mode = "create", defaultValues = {} }) {
+export default function UserForm({ onClose, onSuccess,  defaultValues = {} }) {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues,
   });
@@ -13,11 +13,9 @@ export default function UserForm({ onClose, onSuccess, mode = "create", defaultV
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("email", data.email);
-    if (mode === "update") formData.append("id", data.id);
+    
 
-    const res = mode === "update"
-      ? await updateUserAction(formData)
-      : await UserAction(formData);
+    const res =  await UserAction(formData);
 
     if (res?.success) {
       reset();
@@ -29,12 +27,7 @@ export default function UserForm({ onClose, onSuccess, mode = "create", defaultV
 
   return (
     <form onSubmit={handleSubmit(submitHandler)} className="w-full flex flex-col gap-4">
-      <h2 className="text-2xl font-bold text-center">
-        {mode === "update" ? "Update User" : "Add User"}
-      </h2>
-
-      {mode === "update" && <input type="hidden" {...register("id")} />}
-
+    
       <input
         type="text"
         {...register("name", { required: "Name is required" })}
@@ -53,7 +46,7 @@ export default function UserForm({ onClose, onSuccess, mode = "create", defaultV
 
       <div className="flex justify-between pt-2">
         <button type="submit" className="bg-blue-500 text-white px-6 py-2 rounded">
-          {mode === "update" ? "Update" : "Submit"}
+           Submit
         </button>
 
         <button type="button" onClick={onClose} className="bg-gray-500 text-white px-6 py-2 rounded">
