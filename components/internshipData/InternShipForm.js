@@ -1,5 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function InternshipForm({ onSubmit, onClose }) {
   const {
@@ -18,7 +19,7 @@ export default function InternshipForm({ onSubmit, onClose }) {
             : [],
         };
 
-        onSubmit(payload); // ONLY clean data
+        onSubmit(payload); 
       })}
       className=" w-full flex flex-col"
     >

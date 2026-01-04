@@ -36,10 +36,11 @@ export default function InternList() {
 
     try {
       await deleteInternAction(id);
-     
+     toast.success("Deleted")
       fetchInternships();
     } catch (err) {
-      console.error("Delete failed:", err);
+        toast.error("Delete failed")
+    //   console.error("Delete failed:", err);
     }
   };
 
@@ -59,12 +60,13 @@ export default function InternList() {
     try {
       const res = await updateInternAction(formData);
       if (res?.success) {
-        
+        toast.success("Intern is Updated")
         fetchInternships();
         setShowForm(false);
         setSelectedIntern(null);
       } else {
-        alert("Update failed");
+        toast.error("Update failed")
+        // alert("Update failed");
       }
     } catch (err) {
       console.error("Update failed:", err);

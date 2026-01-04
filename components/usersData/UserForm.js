@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { UserAction } from "../../app/action/users.action";
+import { toast } from "react-toastify";
 
 export default function UserForm({ onClose, onSuccess,  defaultValues = {} }) {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
@@ -19,9 +20,11 @@ export default function UserForm({ onClose, onSuccess,  defaultValues = {} }) {
 
     if (res?.success) {
       reset();
+      toast.success("Submitted..!")
       onSuccess();
     } else {
-      alert("Something went wrong");
+    //   alert("Something went wrong");
+    toast.error("Something wenr wrong");
     }
   };
 

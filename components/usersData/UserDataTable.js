@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { updateUserAction, deleteUserAction } from "../../app/action/users.action";
@@ -32,11 +33,12 @@ export default function UserTable() {
   // Delete user via Server Action
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this user?")) return;
-
     try {
       await deleteUserAction(id);
-      fetchUsers(); // refresh table
+      toast.success(" Deleted ")
+      fetchUsers(); 
     } catch (err) {
+      toast.error(" Delete failed")
       console.error("Delete failed:", err);
     }
   };
@@ -54,6 +56,7 @@ export default function UserTable() {
       const res = await updateUserAction(formData);
       if (res?.success) {
         fetchUsers();
+        toast.success(" Data is updated")
         setShowForm(false);
         setSelectedUser(null);
       } else {
