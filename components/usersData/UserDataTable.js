@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { updateUserAction, deleteUserAction } from "../../app/action/users.action";
-import GetUser from "../../service/user.service"; // still needed for fetching users
+import GetUser from "../../service/user.service"; 
 
 export default function UserTable() {
   const [showForm, setShowForm] = useState(false);
@@ -16,7 +16,7 @@ export default function UserTable() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const data = await GetUser.getAll(); // fetching is still client-side
+      const data = await GetUser.getAll(); 
       setUsers(data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -150,7 +150,7 @@ export default function UserTable() {
                   <td className="p-2 font-sm">{user.name}</td>
                   <td className="p-2">{user.email}</td>
                   <td className="py-3 flex justify-center gap-3">
-                    {/* Edit button opens modal */}
+                  
                     <button
                       className="text-blue-500 hover:text-blue-700 hover:cursor-pointer"
                       onClick={() => {
@@ -161,7 +161,7 @@ export default function UserTable() {
                       <CiEdit size={20} />
                     </button>
 
-                    {/* Delete button calls server action */}
+                    
                     <button
                       className="text-red-500 hover:text-red-600 hover:cursor-pointer"
                       onClick={() => handleDelete(user.id)}

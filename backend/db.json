@@ -1,12 +1,15 @@
 {
   "internships": [
     {
-      "title": "Frontend Intern",
+      "title": "Frontend ",
       "company": "NextVision",
       "location": "Kathmandu",
       "duration": "2 months",
       "description": "Work with React, Next.js UI components.",
-      "requirements": "HTML , React ",
+      "requirements": [
+        "HTML",
+        "React"
+      ],
       "id": 2
     },
     {
@@ -23,16 +26,15 @@
       "id": 3
     },
     {
-      "title": "Devloper",
+      "title": "developer",
       "company": "NextVision",
       "location": "Bharatpur",
       "duration": "2 months",
-      "description": "frontend,backend",
+      "description": "frontend backend",
       "requirements": [
         "nextjs",
         "react",
-        "js",
-        "orm sql"
+        "js"
       ],
       "id": 4
     }

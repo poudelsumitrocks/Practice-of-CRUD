@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import InternList from "./InternList/page";
-import CreateInternForm from "../../internships/create/page";
-import GetInternship from "../../../service/internship.service";
+import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
+import CreateInternForm from "../../internships/create/page";
+import InternshipTable from "../../../components/internshipData/InternShipTable";
+import { createInternAction } from "../../action/internships.action";
+import GetInternship from "../../../service/internship.service";
+
 export default function Internship() {
   const [showForm, setShowForm] = useState(false);
   const [internships, setInternships] = useState([]);
   const [loading, setLoading] = useState(true);
-  // fetch
+
+  // fetch all internships
   const fetchInternships = async () => {
     setLoading(true);
     try {
@@ -22,14 +25,27 @@ export default function Internship() {
     }
   };
 
-  useEffect(() => {
-    fetchInternships();
-  }, []);
+  // handle add  Server Action
+  const handleAddInternship = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("company", data.company);
+      formData.append("location", data.location);
+      formData.append("duration", data.duration);
+      formData.append("description", data.description);
+      formData.append("requirements", data.requirements);
 
-  // Api call for the add
-  const handleAddInternship = async (payload) => {
-    await GetInternship.create(payload);
-    await fetchInternships();
+      const res = await createInternAction(formData);
+      if (res?.success) {
+        await fetchInternships();
+        setShowForm(false);
+      } else {
+        alert("Failed to add internship");
+      }
+    } catch (err) {
+      console.error("Add internship failed:", err);
+    }
   };
 
   return (
@@ -46,7 +62,7 @@ export default function Internship() {
 
           <input
             type="text"
-            placeholder="Search user..."
+            placeholder="Search internship..."
             className="p-2 bg-transparent outline-none text-sm w-48"
           />
         </div>
@@ -59,25 +75,22 @@ export default function Internship() {
         </button>
       </div>
 
-      {/* MODAL */}
+      {/* Add Modal */}
       {showForm && (
         <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-xl w-full max-w-md p-6">
             <CreateInternForm
               onClose={() => setShowForm(false)}
-              onSuccess={async (data) => {
-                await handleAddInternship(data);
-                setShowForm(false);
-              }}
+              onSuccess={handleAddInternship}
             />
           </div>
         </div>
       )}
 
-      <InternList
+      <InternshipTable
         internships={internships}
         loading={loading}
-        refresh={fetchInternships}
+     
       />
     </div>
   );

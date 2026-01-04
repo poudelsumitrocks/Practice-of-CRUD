@@ -1,8 +1,11 @@
+"use client";
+
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-import GetInternship from "../../../../service/internship.service";
+import GetInternship from "../../service/internship.service";
 import { useState, useEffect } from "react";
 import { refresh } from "next/cache";
+import { updateInternAction, deleteInternAction } from "../../app/action/internships.action";
 
 export default function InternList() {
   const [showForm, setShowForm] = useState(false);
@@ -11,7 +14,6 @@ export default function InternList() {
   const [selectedIntern, setSelectedIntern] = useState(null);
 
   // fetch data
-
   const fetchInternships = async () => {
     setLoading(true);
     try {
@@ -28,42 +30,50 @@ export default function InternList() {
     fetchInternships();
   }, []);
 
-  // for Delete 
+  // Delete internship 
   const handleDelete = async (id) => {
-    if (confirm("Are you sure you want to delete this internship?")) {
-      await GetInternship.delete(id);
-      refresh();
+    if (!confirm("Are you sure you want to delete this internship?")) return;
+
+    try {
+      await deleteInternAction(id);
+     
       fetchInternships();
+    } catch (err) {
+      console.error("Delete failed:", err);
     }
   };
 
-  // for updata
+  // Update internship 
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      title: e.target.title.value,
-      company: e.target.company.value,
-      location: e.target.location.value,
-      duration: e.target.duration.value,
-      description: e.target.description.value,
-      requirements: e.target.requirements.value,
-    };
+    const formData = new FormData();
+    formData.append("id", selectedIntern.id);
+    formData.append("title", e.target.title.value);
+    formData.append("company", e.target.company.value);
+    formData.append("location", e.target.location.value);
+    formData.append("duration", e.target.duration.value);
+    formData.append("description", e.target.description.value);
+    formData.append("requirements", e.target.requirements.value);
 
     try {
-      await GetInternship.update(selectedIntern.id, payload);
-      refresh();
-      fetchInternships();
-      setShowForm(false);
-      setSelectedIntern(null);
-    } catch (error) {
-      console.error("Update failed:", error);
+      const res = await updateInternAction(formData);
+      if (res?.success) {
+        
+        fetchInternships();
+        setShowForm(false);
+        setSelectedIntern(null);
+      } else {
+        alert("Update failed");
+      }
+    } catch (err) {
+      console.error("Update failed:", err);
     }
   };
 
   return (
     <div>
-   {/* form for the Updata */}
+      {/* form for Update */}
       {showForm && selectedIntern && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="w-full max-w-xl bg-white p-5 rounded-lg shadow-lg">
@@ -185,9 +195,7 @@ export default function InternList() {
                   <td className="p-1">{intern.location}</td>
                   <td className="p-1">{intern.duration}</td>
                   <td className="p-1">
-                    <p className="truecate p-3 max-w-50 ">
-                      {intern.description}
-                    </p>
+                    <p className="truncate p-3 max-w-50">{intern.description}</p>
                   </td>
                   <td className="p-1">
                     <p className="flex flex-col max-w-30">{intern.requirements}</p>
