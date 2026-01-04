@@ -1,28 +1,57 @@
 {
   "internships": [
     {
-      "id": 2,
       "title": "Frontend Intern",
       "company": "NextVision",
       "location": "Kathmandu",
       "duration": "2 months",
       "description": "Work with React, Next.js UI components.",
+      "requirements": "HTML , React ",
+      "id": 2
+    },
+    {
+      "title": "Backend Intern",
+      "company": "NextVision",
+      "location": "Kathmandu",
+      "duration": "2 months",
+      "description": "Working on sql,Orm,Jwt",
       "requirements": [
-        "HTML CSS",
-        "React basics"
-      ]
+        "nextjs",
+        "react",
+        "js"
+      ],
+      "id": 3
+    },
+    {
+      "title": "Devloper",
+      "company": "NextVision",
+      "location": "Bharatpur",
+      "duration": "2 months",
+      "description": "frontend,backend",
+      "requirements": [
+        "nextjs",
+        "react",
+        "js",
+        "orm sql"
+      ],
+      "id": 4
     }
   ],
   "users": [
     {
-      "id": 1,
-      "name": "Name1",
-      "email": "name1@example.com"
+      "name": "SumitPoudel",
+      "email": "hello@abc.com",
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "Name2",
-      "email": "name2@example.com"
+      "name": "sagar",
+      "email": "example1@gmail.com",
+      "id": 2
+    },
+    {
+      "name": "Name",
+      "email": "example1@gmail.com",
+      "id": 3
     }
   ]
 }
