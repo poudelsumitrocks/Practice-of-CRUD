@@ -4,7 +4,6 @@ import GetUser from "../../service/user.service";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 
-
 export default function UserTable() {
   const [showForm, setShowForm] = useState(false);
   const [users, setUsers] = useState([]);
