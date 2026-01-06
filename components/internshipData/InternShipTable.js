@@ -2,33 +2,35 @@
 
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-import GetInternship from "../../service/internship.service";
-import { useState, useEffect } from "react";
-import { refresh } from "next/cache";
-import { updateInternAction, deleteInternAction } from "../../app/action/internships.action";
+import { toast } from "react-toastify";
 
-export default function InternList() {
+import { useState, useEffect } from "react";
+
+import { updateInternAction, deleteInternAction } from "../../app/action/internships.action";
+import Loading from "../../app/dashboard/Internship/Loading";
+
+export default function InternList({internships,loading,onRefresh}) {
   const [showForm, setShowForm] = useState(false);
-  const [internships, setInternships] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [internships, setInternships] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const [selectedIntern, setSelectedIntern] = useState(null);
 
   // fetch data
-  const fetchInternships = async () => {
-    setLoading(true);
-    try {
-      const data = await GetInternship.getALL();
-      setInternships(data);
-    } catch (error) {
-      console.error("Error fetching internships:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchInternships = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const data = await GetInternship.getALL();
+  //     setInternships(data);
+  //   } catch (error) {
+  //     console.error("Error fetching internships:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchInternships();
-  }, []);
+  // useEffect(() => {
+  //   fetchInternships();
+  // }, []);
 
   // Delete internship 
   const handleDelete = async (id) => {
@@ -37,7 +39,8 @@ export default function InternList() {
     try {
       await deleteInternAction(id);
      toast.success("Deleted")
-      fetchInternships();
+      // fetchInternships();
+      onRefresh();
     } catch (err) {
         toast.error("Delete failed")
     //   console.error("Delete failed:", err);
@@ -61,9 +64,10 @@ export default function InternList() {
       const res = await updateInternAction(formData);
       if (res?.success) {
         toast.success("Intern is Updated")
-        fetchInternships();
+        // fetchInternships();
         setShowForm(false);
         setSelectedIntern(null);
+        onRefresh()
       } else {
         toast.error("Update failed")
         // alert("Update failed");
@@ -172,11 +176,12 @@ export default function InternList() {
 
           <tbody>
             {loading ? (
-              <tr>
-                <td colSpan="8" className="text-center p-6">
-                  Loading internships...
-                </td>
-              </tr>
+              // <tr>
+              //   <td colSpan="8" className="text-center p-6">
+              //     Loading internships...
+              //   </td>
+              // </tr>
+              <Loading/>
             ) : internships.length === 0 ? (
               <tr>
                 <td colSpan="8" className="text-center p-6 text-gray-500">

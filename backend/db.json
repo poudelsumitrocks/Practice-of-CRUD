@@ -1,7 +1,7 @@
 {
   "internships": [
     {
-      "title": "Frontend ",
+      "title": "Backend ",
       "company": "NextVision",
       "location": "Kathmandu",
       "duration": "2 months",
@@ -11,43 +11,17 @@
         "React"
       ],
       "id": 2
-    },
-    {
-      "title": "Backend Intern",
-      "company": "NextVision",
-      "location": "Kathmandu",
-      "duration": "2 months",
-      "description": "Working on sql,Orm,Jwt",
-      "requirements": [
-        "nextjs",
-        "react",
-        "js"
-      ],
-      "id": 3
-    },
-    {
-      "title": "developer",
-      "company": "NextVision",
-      "location": "Bharatpur",
-      "duration": "2 months",
-      "description": "frontend backend",
-      "requirements": [
-        "nextjs",
-        "react",
-        "js"
-      ],
-      "id": 4
     }
   ],
   "users": [
     {
-      "name": "SumitPoudel",
-      "email": "hello@abc.com",
+      "name": "sumit",
+      "email": "hello1@abc.com",
       "id": 1
     },
     {
       "name": "sagar",
-      "email": "sumitpoudell20s@gmail.com",
+      "email": "sumi123@gmail.com",
       "id": 2
     }
   ]

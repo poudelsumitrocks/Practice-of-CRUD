@@ -1,5 +1,6 @@
 "use client";
 
+import submitAction from "../../app/action/actionForm";
 import { useForm } from "react-hook-form";
 import { UserAction } from "../../app/action/users.action";
 import { toast } from "react-toastify";
@@ -24,12 +25,14 @@ export default function UserForm({ onClose, onSuccess,  defaultValues = {} }) {
       onSuccess();
     } else {
     //   alert("Something went wrong");
-    toast.error("Something wenr wrong");
+    toast.error("Something went wrong");
     }
   };
 
+
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="w-full flex flex-col gap-4">
+    <form  onSubmit={handleSubmit(submitHandler)} className=" w-full flex flex-col gap-4">
+      <h1 className="text-2xl font-bold">Add user</h1>
     
       <input
         type="text"
@@ -57,5 +60,6 @@ export default function UserForm({ onClose, onSuccess,  defaultValues = {} }) {
         </button>
       </div>
     </form>
+    
   );
 }

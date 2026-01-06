@@ -6,29 +6,30 @@ import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { updateUserAction, deleteUserAction } from "../../app/action/users.action";
 import GetUser from "../../service/user.service"; 
+import Loading from "../../app/dashboard/UserPage/Loading";
 
-export default function UserTable() {
+export default function UserTable({loading,users,onRefresh}) {
   const [showForm, setShowForm] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [users, setUsers] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
 
   // Fetch all users
-  const fetchUsers = async () => {
-    setLoading(true);
-    try {
-      const data = await GetUser.getAll(); 
-      setUsers(data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchUsers = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const data = await GetUser.getAll(); 
+  //     setUsers(data);
+  //   } catch (error) {
+  //     console.error("Error fetching users:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
 
   // Delete user via Server Action
   const handleDelete = async (id) => {
@@ -36,10 +37,11 @@ export default function UserTable() {
     try {
       await deleteUserAction(id);
       toast.success(" Deleted ")
-      fetchUsers(); 
+      // fetchUsers(); 
+      onRefresh();
     } catch (err) {
       toast.error(" Delete failed")
-      console.error("Delete failed:", err);
+      // console.error("Delete failed:", err);
     }
   };
 
@@ -55,10 +57,11 @@ export default function UserTable() {
     try {
       const res = await updateUserAction(formData);
       if (res?.success) {
-        fetchUsers();
+        // fetchUsers();
         toast.success(" Data is updated")
         setShowForm(false);
         setSelectedUser(null);
+        onRefresh();
       } else {
         alert("Update failed");
       }
@@ -130,11 +133,13 @@ export default function UserTable() {
           </thead>
           <tbody>
             {loading ? (
-              <tr>
-                <td colSpan="4" className="text-center p-6">
-                  Loading users...
-                </td>
-              </tr>
+              
+              // <tr>
+              //   <td colSpan="4" className="text-center p-6">
+              //     Loading users...
+              //   </td>
+              // </tr>
+              <Loading rows={5}/>
             ) : users.length === 0 ? (
               <tr>
                 <td colSpan="4" className="text-center p-6 text-gray-500">
